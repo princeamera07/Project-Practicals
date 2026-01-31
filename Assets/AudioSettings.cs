@@ -5,12 +5,19 @@ public class AudioSettings : MonoBehaviour
 {
     public Scrollbar volumeSlider;
     public Scrollbar sfxSlider;
-
+    public AudioSource sfxSource; 
     void Start()
     {
-        // Load saved values
-        volumeSlider.value = PlayerPrefs.GetFloat("Volume", 1f);
-        sfxSlider.value = PlayerPrefs.GetFloat("SFX", 1f);
+        
+        float volume = PlayerPrefs.GetFloat("Volume", 1f);
+        float sfx = PlayerPrefs.GetFloat("SFX", 1f);
+
+        volumeSlider.value = volume;
+        sfxSlider.value = sfx;
+
+        
+        AudioListener.volume = volume;
+        sfxSource.volume = sfx;
     }
 
     public void SetVolume(float value)
@@ -22,7 +29,7 @@ public class AudioSettings : MonoBehaviour
     public void SetSFX(float value)
     {
         PlayerPrefs.SetFloat("SFX", value);
-        
+        sfxSource.volume = value;
     }
 
     public void ResetSettings()
