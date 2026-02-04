@@ -401,6 +401,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
+  pointID: 
+  targetID: 
 --- !u!1 &73302006
 GameObject:
   m_ObjectHideFlags: 0
@@ -551,6 +553,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
+  pointID: sup-
+  targetID: volt-
 --- !u!1 &76465159
 GameObject:
   m_ObjectHideFlags: 0
@@ -701,6 +705,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
+  pointID: 
+  targetID: 
 --- !u!1 &247468760
 GameObject:
   m_ObjectHideFlags: 0
@@ -926,6 +932,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
+  pointID: 
+  targetID: 
 --- !u!1 &315666014
 GameObject:
   m_ObjectHideFlags: 0
@@ -1171,6 +1179,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
+  pointID: 
+  targetID: 
 --- !u!1 &350386469
 GameObject:
   m_ObjectHideFlags: 0
@@ -1321,6 +1331,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
+  pointID: volt-
+  targetID: sup-
 --- !u!1 &385030014
 GameObject:
   m_ObjectHideFlags: 0
@@ -1539,6 +1551,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
+  pointID: N
+  targetID: amm+
 --- !u!1 &484264104
 GameObject:
   m_ObjectHideFlags: 0
@@ -1724,6 +1738,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
+  pointID: P
+  targetID: sup+
 --- !u!1 &650818666
 GameObject:
   m_ObjectHideFlags: 0
@@ -2105,6 +2121,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
+  pointID: 
+  targetID: 
 --- !u!1 &898292360
 GameObject:
   m_ObjectHideFlags: 0
@@ -2878,6 +2896,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
+  pointID: 
+  targetID: 
 --- !u!1 &1260250622
 GameObject:
   m_ObjectHideFlags: 0
@@ -3064,6 +3084,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
+  pointID: 
+  targetID: 
 --- !u!1 &1582030268
 GameObject:
   m_ObjectHideFlags: 0
@@ -3408,6 +3430,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
+  pointID: 
+  targetID: 
 --- !u!1 &1664359290
 GameObject:
   m_ObjectHideFlags: 0
@@ -3558,6 +3582,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
+  pointID: sup+
+  targetID: P
 --- !u!1 &1678166775
 GameObject:
   m_ObjectHideFlags: 0
@@ -3801,6 +3827,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
+  pointID: amm+
+  targetID: N
 --- !u!1 &1709612135
 GameObject:
   m_ObjectHideFlags: 0
@@ -4246,6 +4274,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
+  pointID: amm-
+  targetID: sup-
 --- !u!1 &1824920867
 GameObject:
   m_ObjectHideFlags: 0
@@ -4293,7 +4323,9 @@ MonoBehaviour:
   wirePrefab: {fileID: 7399065141583612501, guid: 64f8e390aac6f0244a1b8b0f3597bb82, type: 3}
   wireParent: {fileID: 484264105}
   resolution: 20
-  sagAmount: 40
+  sagAmount: 17
+  normalColor: {r: 0, g: 0, b: 0, a: 1}
+  errorColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &1834025215
 GameObject:
   m_ObjectHideFlags: 0
@@ -4535,6 +4567,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
+  pointID: volt+
+  targetID: sup+
 --- !u!1 &1890751281
 GameObject:
   m_ObjectHideFlags: 0
