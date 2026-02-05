@@ -11,12 +11,11 @@ public class LabController : MonoBehaviour
     public TextMeshProUGUI voltmeterText;
     public TextMeshProUGUI ammeterText;
     
-    [Header("Power Switch Images")]
+    [Header("Power Switch")]
     public Image switchImage;           
     public Sprite switchOnPicture;      
     public Sprite switchOffPicture;     
-    
-    public bool isPowerOn = false;     // Starts OFF
+    public bool isPowerOn = false;     
 
     [Header("Visual Fixes")]
     public float fineKnobStartingOffset = 0f; 
@@ -25,13 +24,14 @@ public class LabController : MonoBehaviour
     public float coarseMaxAngle = 360f; 
     public float fineMaxAngle = 180f;   
 
-    [Header("Voltage Settings")]
+    [Header("Source Settings")]
     public float coarseMaxVoltage = 10f; 
     public float fineMaxVoltage = 1.0f;  
 
     [Header("Circuit Physics (Omega ETB-68)")]
     public float seriesResistance = 10f; 
-    public float diodeCutIn = 0.7f;      
+    public float diodeThreshold = 0.6f;  
+    public float diodeInternalR = 0.5f; 
 
     private float currentCoarseAngle = 0f;
     private float currentFineAngle = 0f;
@@ -40,17 +40,9 @@ public class LabController : MonoBehaviour
 
     void Start()
     {
-        if (fineKnob != null)
-        {
-            fineKnob.localEulerAngles = new Vector3(0, 0, fineKnobStartingOffset);
-        }
-        
-        // Initialize Visuals
+        if (fineKnob != null) fineKnob.localEulerAngles = new Vector3(0, 0, fineKnobStartingOffset);
         UpdateSwitchVisuals();
-        
-        // Force screens to update immediately
-        if (isPowerOn) CalculateCircuit();
-        else ClearScreens();
+        ClearScreens();
     }
 
     void Update()
@@ -59,11 +51,10 @@ public class LabController : MonoBehaviour
         
         if (isPowerOn)
         {
-            CalculateCircuit();
+            CalculateForwardBias();
         }
         else
         {
-            // If Power is OFF, make screens invisible
             ClearScreens();
         }
     }
@@ -74,19 +65,72 @@ public class LabController : MonoBehaviour
         UpdateSwitchVisuals();  
     }
 
+    void CalculateForwardBias()
+    {
+        // --- 1. SAFETY CHECK: RED WIRES? ---
+        if (WireManager_UI.Instance.HasBadWires())
+        {
+            if (voltmeterText != null) voltmeterText.text = "Err";
+            if (ammeterText != null) ammeterText.text = "Err";
+            return; // Stop physics!
+        }
+
+        // --- 2. Normal Physics ---
+        float coarsePercent = currentCoarseAngle / coarseMaxAngle;
+        float finePercent = currentFineAngle / fineMaxAngle;
+        float sourceVoltage = (coarsePercent * coarseMaxVoltage) + (finePercent * fineMaxVoltage);
+
+        float displayedVolts = 0f;
+        float displayedAmps = 0f;
+
+        if (sourceVoltage <= diodeThreshold)
+        {
+            // Below Knee: Diode is Open. 
+            // Voltmeter sees Source, Ammeter sees 0.
+            displayedVolts = sourceVoltage;
+            displayedAmps = 0f;
+        }
+        else
+        {
+            // Forward Bias: Diode is Closed.
+            // I = (V_s - V_d) / R
+            float totalResistance = seriesResistance + diodeInternalR;
+            float current = (sourceVoltage - diodeThreshold) / totalResistance;
+            
+            // Voltmeter across diode (Knee + Drop)
+            float diodeVoltageDrop = diodeThreshold + (current * diodeInternalR);
+
+            displayedVolts = diodeVoltageDrop;
+            displayedAmps = current;
+        }
+
+        UpdateScreens(displayedVolts, displayedAmps);
+    }
+
+    void UpdateScreens(float volts, float amps)
+    {
+        if (voltmeterText != null)
+            voltmeterText.text = volts.ToString("F2"); 
+            
+        if (ammeterText != null)
+        {
+            float displaymA = amps * 1000f; 
+            ammeterText.text = displaymA.ToString("F2"); 
+        }
+    }
+    
+    void ClearScreens()
+    {
+        if (voltmeterText != null) voltmeterText.text = "";
+        if (ammeterText != null) ammeterText.text = "";
+    }
+
     void UpdateSwitchVisuals()
     {
         if (switchImage != null && switchOnPicture != null && switchOffPicture != null)
         {
             switchImage.sprite = isPowerOn ? switchOnPicture : switchOffPicture;
         }
-    }
-
-    // NEW HELPER: Makes text empty
-    void ClearScreens()
-    {
-        if (voltmeterText != null) voltmeterText.text = "";
-        if (ammeterText != null) ammeterText.text = "";
     }
 
     void HandleInput()
@@ -99,11 +143,7 @@ public class LabController : MonoBehaviour
             else if (RectTransformUtility.RectangleContainsScreenPoint(fineKnob, Input.mousePosition))
                 currentKnobDragging = fineKnob;
         }
-
-        if (Input.GetMouseButtonUp(0))
-        {
-            currentKnobDragging = null;
-        }
+        if (Input.GetMouseButtonUp(0)) currentKnobDragging = null;
 
         if (currentKnobDragging != null)
         {
@@ -120,38 +160,9 @@ public class LabController : MonoBehaviour
             {
                 currentFineAngle += mouseDelta * 2f;
                 currentFineAngle = Mathf.Clamp(currentFineAngle, 0f, fineMaxAngle);
-                
                 float visualAngle = -currentFineAngle + fineKnobStartingOffset;
                 fineKnob.localEulerAngles = new Vector3(0, 0, visualAngle);
             }
         }
     }
-
-    void CalculateCircuit()
-    {
-        float coarsePercent = currentCoarseAngle / coarseMaxAngle;
-        float finePercent = currentFineAngle / fineMaxAngle;
-        float totalVoltage = (coarsePercent * coarseMaxVoltage) + (finePercent * fineMaxVoltage);
-
-        float currentAmps = 0f;
-        
-        if (totalVoltage > diodeCutIn)
-        {
-            currentAmps = (totalVoltage - diodeCutIn) / seriesResistance;
-        }
-
-        UpdateScreens(totalVoltage, currentAmps);
-    }
-
-    void UpdateScreens(float volts, float amps)
-    {
-        if (voltmeterText != null)
-            voltmeterText.text = volts.ToString("F2");
-            
-        if (ammeterText != null)
-        {
-            float displaymA = amps * 1000f; 
-            ammeterText.text = displaymA.ToString("F2"); 
-        }
-    }
-} 
+}

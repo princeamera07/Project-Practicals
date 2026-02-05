@@ -11,8 +11,8 @@ public class WireManager_UI : MonoBehaviour
     public RectTransform wireParent;
     
     [Header("Magnet Feature")]
-    public float snapRadius = 45f; // How close (pixels) to snap
-    
+    public float snapRadius = 45f; 
+
     [Header("Simulator Tools")]
     public bool isEraserOn = false; 
     public float deleteRadius = 25f; 
@@ -28,20 +28,22 @@ public class WireManager_UI : MonoBehaviour
     private UILineRenderer currentWire;
     private WirePoint currentStartPoint;
     
-    // Lists for optimization
     private List<UILineRenderer> allWires = new List<UILineRenderer>();
-    private WirePoint[] allHoles; // Cache all holes for snapping
+    private WirePoint[] allHoles; 
 
     void Awake() 
     {
         Instance = this;
-        // FIND ALL HOLES ONCE AT START (Efficiency)
-        allHoles = FindObjectsOfType<WirePoint>();
+        allHoles = FindObjectsOfType<WirePoint>(); 
     }
 
-    private Vector2 GetLocalPosition(RectTransform target)
+    public bool HasBadWires()
     {
-        return wireParent.InverseTransformPoint(target.position);
+        foreach (var wire in allWires)
+        {
+            if (wire != null && wire.color == errorColor) return true;
+        }
+        return false; 
     }
 
     public void StartWire(WirePoint startPoint)
@@ -65,10 +67,8 @@ public class WireManager_UI : MonoBehaviour
 
     void Update()
     {
-        // 1. Eraser Logic
         CheckForEraserClick();
 
-        // 2. Drawing Logic
         if (currentWire != null)
         {
             Vector2 localMousePos;
@@ -77,48 +77,27 @@ public class WireManager_UI : MonoBehaviour
 
             UpdateRope(startPos, localMousePos);
 
-            // --- MOUSE RELEASED: TRY TO SNAP ---
             if (Input.GetMouseButtonUp(0))
             {
-                // Try to find a hole near the mouse
                 WirePoint nearbyHole = FindClosestHole(localMousePos);
-
-                if (nearbyHole != null)
-                {
-                    // Success! We found a hole nearby
-                    EndWire(nearbyHole);
-                }
-                else
-                {
-                    // Too far from any hole, delete it
-                    DestroyWire();
-                }
+                if (nearbyHole != null) EndWire(nearbyHole);
+                else DestroyWire(); 
             }
             
-            // Cancel with Right Click
-            if (Input.GetMouseButtonDown(1))
-            {
-                DestroyWire();
-            }
+            if (Input.GetMouseButtonDown(1)) DestroyWire();
         }
     }
 
-    // --- NEW: MAGNET LOGIC ---
     WirePoint FindClosestHole(Vector2 mouseLocalPos)
     {
         WirePoint bestHole = null;
-        float closestDist = snapRadius; // Start with max range
+        float closestDist = snapRadius; 
 
         foreach (var hole in allHoles)
         {
-            if (hole == null) continue;
-            if (hole == currentStartPoint) continue; // Don't snap to self
-
-            // Convert hole position to the same local space as mouse
+            if (hole == null || hole == currentStartPoint) continue;
             Vector2 holeLocalPos = GetLocalPosition(hole.rectTransform);
-            
             float dist = Vector2.Distance(mouseLocalPos, holeLocalPos);
-
             if (dist < closestDist)
             {
                 closestDist = dist;
@@ -142,10 +121,11 @@ public class WireManager_UI : MonoBehaviour
             Vector2 endPos = GetLocalPosition(endPoint.rectTransform);
             UpdateRope(startPos, endPos);
 
+            // --- STRICT CHECK HERE ---
             if (CheckDualConnection(currentStartPoint, endPoint))
-                currentWire.color = normalColor;
+                currentWire.color = normalColor; // Match found -> Black
             else
-                currentWire.color = errorColor;
+                currentWire.color = errorColor;  // No match -> RED
 
             allWires.Add(currentWire);
 
@@ -155,39 +135,50 @@ public class WireManager_UI : MonoBehaviour
         }
     }
 
-    // ... [Eraser Logic] ...
+    // --- Validation Logic ---
+    private bool CheckDualConnection(WirePoint start, WirePoint end)
+    {
+        // Try all 4 combinations. If ANY one works, the wire is valid.
+        if (IsStrictMatch(start.pointID_1, start.targetID_1, end.pointID_1, end.targetID_1)) return true;
+        if (IsStrictMatch(start.pointID_1, start.targetID_1, end.pointID_2, end.targetID_2)) return true;
+        if (IsStrictMatch(start.pointID_2, start.targetID_2, end.pointID_1, end.targetID_1)) return true;
+        if (IsStrictMatch(start.pointID_2, start.targetID_2, end.pointID_2, end.targetID_2)) return true;
+        
+        return false; // No combination worked -> BAD WIRE
+    }
+
+    // --- NEW STRICT FUNCTION ---
+    private bool IsStrictMatch(string myID, string myTarget, string otherID, string otherTarget)
+    {
+        // 1. If IDs are missing, it fails automatically.
+        // 2. A match ONLY exists if one side specifically names the other as its target.
+        
+        bool forwardMatch = !string.IsNullOrEmpty(myTarget) && myTarget == otherID;
+        bool reverseMatch = !string.IsNullOrEmpty(otherTarget) && otherTarget == myID;
+
+        // If either direction is a match, we are good.
+        return forwardMatch || reverseMatch;
+    }
+
+    // ... [Rest of Eraser/Helper Functions] ...
+    
     private void CheckForEraserClick()
     {
         if (!isEraserOn || !Input.GetMouseButtonDown(0)) return;
-
         Vector2 localMousePos;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(wireParent, Input.mousePosition, null, out localMousePos);
-
         UILineRenderer wireToDelete = null;
-        float closestDist = deleteRadius; 
-
-        foreach (var wire in allWires)
-        {
+        foreach (var wire in allWires) {
             if (wire == null) continue;
-            if (IsPointNearWire(wire, localMousePos, deleteRadius))
-            {
-                wireToDelete = wire;
-                break; 
-            }
+            if (IsPointNearWire(wire, localMousePos, deleteRadius)) { wireToDelete = wire; break; }
         }
-
-        if (wireToDelete != null)
-        {
-            allWires.Remove(wireToDelete);
-            Destroy(wireToDelete.gameObject);
-        }
+        if (wireToDelete != null) { allWires.Remove(wireToDelete); Destroy(wireToDelete.gameObject); }
     }
 
     private bool IsPointNearWire(UILineRenderer wire, Vector2 point, float radius)
     {
         if (wire.Points == null) return false;
-        for (int i = 0; i < wire.Points.Length - 1; i++)
-        {
+        for (int i = 0; i < wire.Points.Length - 1; i++) {
             float dist = HandleUtility_DistancePointLine(point, wire.Points[i], wire.Points[i+1]);
             if (dist < radius) return true;
         }
@@ -200,31 +191,9 @@ public class WireManager_UI : MonoBehaviour
         return (pa - ba * h).magnitude;
     }
 
-    // ... [Connection Checks] ...
-    private bool CheckDualConnection(WirePoint start, WirePoint end)
-    {
-        if (IsMatch(start.pointID_1, start.targetID_1, end.pointID_1, end.targetID_1)) return true;
-        if (IsMatch(start.pointID_1, start.targetID_1, end.pointID_2, end.targetID_2)) return true;
-        if (IsMatch(start.pointID_2, start.targetID_2, end.pointID_1, end.targetID_1)) return true;
-        if (IsMatch(start.pointID_2, start.targetID_2, end.pointID_2, end.targetID_2)) return true;
-        return false;
-    }
-
-    private bool IsMatch(string pID, string tID, string other_pID, string other_tID)
-    {
-        if (string.IsNullOrEmpty(pID) && string.IsNullOrEmpty(other_pID)) return false;
-        if (!string.IsNullOrEmpty(tID) && other_pID != tID) return false;
-        if (!string.IsNullOrEmpty(other_tID) && pID != other_tID) return false;
-        return true;
-    }
-
-    private void DestroyWire()
-    {
-        if (currentWire != null) Destroy(currentWire.gameObject);
-        currentWire = null;
-        currentStartPoint = null;
-    }
-
+    private void DestroyWire() { if (currentWire != null) Destroy(currentWire.gameObject); currentWire = null; currentStartPoint = null; }
+    private Vector2 GetLocalPosition(RectTransform target) { return wireParent.InverseTransformPoint(target.position); }
+    
     private void UpdateRope(Vector2 p0, Vector2 p2)
     {
         if (currentWire == null) return;
@@ -232,8 +201,7 @@ public class WireManager_UI : MonoBehaviour
         float distance = Vector2.Distance(p0, p2);
         Vector2 p1 = midPoint + new Vector2(0, -Mathf.Abs(sagAmount + (distance * 0.1f)));
         Vector2[] points = new Vector2[resolution];
-        for (int i = 0; i < resolution; i++)
-        {
+        for (int i = 0; i < resolution; i++) {
             float t = i / (float)(resolution - 1);
             float u = 1 - t;
             float tt = t * t;
@@ -243,12 +211,6 @@ public class WireManager_UI : MonoBehaviour
         currentWire.Points = points;
         currentWire.SetAllDirty();
     }
-    
     public void ToggleEraser() { isEraserOn = !isEraserOn; }
-    
-    public void ClearAllWires()
-    {
-        foreach(var wire in allWires) { if(wire != null) Destroy(wire.gameObject); }
-        allWires.Clear();
-    }
+    public void ClearAllWires() { foreach(var wire in allWires) if(wire) Destroy(wire.gameObject); allWires.Clear(); }
 }

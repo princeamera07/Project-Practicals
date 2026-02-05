@@ -10,8 +10,8 @@ public class WirePoint : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public string targetID_1; 
 
     [Header("Connection Set 2 (Optional)")]
-    public string pointID_2;   
-    public string targetID_2; 
+    public string pointID_2;   // <--- This was missing!
+    public string targetID_2;  // <--- This was missing!
 
     void Awake() => rectTransform = GetComponent<RectTransform>();
 
