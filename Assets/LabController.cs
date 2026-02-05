@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI; 
 using UnityEngine.EventSystems;
 
 public class LabController : MonoBehaviour
@@ -9,6 +10,13 @@ public class LabController : MonoBehaviour
     public RectTransform fineKnob;      
     public TextMeshProUGUI voltmeterText;
     public TextMeshProUGUI ammeterText;
+    
+    [Header("Power Switch Images")]
+    public Image switchImage;           
+    public Sprite switchOnPicture;      
+    public Sprite switchOffPicture;     
+    
+    public bool isPowerOn = false;     // Starts OFF
 
     [Header("Visual Fixes")]
     public float fineKnobStartingOffset = 0f; 
@@ -21,13 +29,12 @@ public class LabController : MonoBehaviour
     public float coarseMaxVoltage = 10f; 
     public float fineMaxVoltage = 1.0f;  
 
-    [Header("Circuit Physics")]
-    public float seriesResistance = 100f;
-    public float diodeCutIn = 0.7f;
+    [Header("Circuit Physics (Omega ETB-68)")]
+    public float seriesResistance = 10f; 
+    public float diodeCutIn = 0.7f;      
 
     private float currentCoarseAngle = 0f;
     private float currentFineAngle = 0f;
-    
     private RectTransform currentKnobDragging = null;
     private Vector2 lastMousePosition;
 
@@ -37,12 +44,49 @@ public class LabController : MonoBehaviour
         {
             fineKnob.localEulerAngles = new Vector3(0, 0, fineKnobStartingOffset);
         }
+        
+        // Initialize Visuals
+        UpdateSwitchVisuals();
+        
+        // Force screens to update immediately
+        if (isPowerOn) CalculateCircuit();
+        else ClearScreens();
     }
 
     void Update()
     {
         HandleInput();
-        CalculateCircuit();
+        
+        if (isPowerOn)
+        {
+            CalculateCircuit();
+        }
+        else
+        {
+            // If Power is OFF, make screens invisible
+            ClearScreens();
+        }
+    }
+
+    public void TogglePower()
+    {
+        isPowerOn = !isPowerOn; 
+        UpdateSwitchVisuals();  
+    }
+
+    void UpdateSwitchVisuals()
+    {
+        if (switchImage != null && switchOnPicture != null && switchOffPicture != null)
+        {
+            switchImage.sprite = isPowerOn ? switchOnPicture : switchOffPicture;
+        }
+    }
+
+    // NEW HELPER: Makes text empty
+    void ClearScreens()
+    {
+        if (voltmeterText != null) voltmeterText.text = "";
+        if (ammeterText != null) ammeterText.text = "";
     }
 
     void HandleInput()
@@ -50,7 +94,6 @@ public class LabController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             lastMousePosition = Input.mousePosition;
-
             if (RectTransformUtility.RectangleContainsScreenPoint(coarseKnob, Input.mousePosition))
                 currentKnobDragging = coarseKnob;
             else if (RectTransformUtility.RectangleContainsScreenPoint(fineKnob, Input.mousePosition))
@@ -88,23 +131,27 @@ public class LabController : MonoBehaviour
     {
         float coarsePercent = currentCoarseAngle / coarseMaxAngle;
         float finePercent = currentFineAngle / fineMaxAngle;
-
         float totalVoltage = (coarsePercent * coarseMaxVoltage) + (finePercent * fineMaxVoltage);
 
         float currentAmps = 0f;
+        
         if (totalVoltage > diodeCutIn)
         {
             currentAmps = (totalVoltage - diodeCutIn) / seriesResistance;
         }
 
-        // --- UPDATED: BOTH SHOW 0.00 ---
+        UpdateScreens(totalVoltage, currentAmps);
+    }
+
+    void UpdateScreens(float volts, float amps)
+    {
         if (voltmeterText != null)
-            voltmeterText.text = totalVoltage.ToString("F2"); // E.g. "5.00"
+            voltmeterText.text = volts.ToString("F2");
             
         if (ammeterText != null)
         {
-            float displaymA = currentAmps * 1000f; 
-            ammeterText.text = displaymA.ToString("F2"); // CHANGED FROM F1 TO F2
+            float displaymA = amps * 1000f; 
+            ammeterText.text = displaymA.ToString("F2"); 
         }
     }
-}
+} 

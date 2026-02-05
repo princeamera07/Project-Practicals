@@ -402,9 +402,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
-  pointID_1: 
+  pointID_1: r2-
   targetID_1: 
-  pointID_2: 
+  pointID_2: r2-
   targetID_2: 
 --- !u!1 &73302006
 GameObject:
@@ -556,9 +556,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
-  pointID_1: 
+  pointID_1: sup+
   targetID_1: 
-  pointID_2: 
+  pointID_2: sup+
   targetID_2: 
 --- !u!1 &76465159
 GameObject:
@@ -710,9 +710,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
-  pointID_1: 
+  pointID_1: r3-
   targetID_1: 
-  pointID_2: 
+  pointID_2: r3-
   targetID_2: 
 --- !u!1 &247468760
 GameObject:
@@ -1073,9 +1073,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
-  pointID_1: 
+  pointID_1: N1
   targetID_1: 
-  pointID_2: 
+  pointID_2: N1
   targetID_2: 
 --- !u!1 &287774255
 GameObject:
@@ -1501,9 +1501,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
-  pointID_1: 
+  pointID_1: r2+
   targetID_1: 
-  pointID_2: 
+  pointID_2: r2+
   targetID_2: 
 --- !u!1 &385030014
 GameObject:
@@ -1723,9 +1723,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
-  pointID_1: 
+  pointID_1: N
   targetID_1: 
-  pointID_2: 
+  pointID_2: N
   targetID_2: 
 --- !u!1 &484264104
 GameObject:
@@ -1914,7 +1914,7 @@ MonoBehaviour:
   rectTransform: {fileID: 0}
   pointID_1: P
   targetID_1: 
-  pointID_2: 
+  pointID_2: P
   targetID_2: 
 --- !u!1 &650818666
 GameObject:
@@ -2352,9 +2352,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
-  pointID_1: 
+  pointID_1: r+
   targetID_1: 
-  pointID_2: 
+  pointID_2: r+
   targetID_2: 
 --- !u!1 &898292360
 GameObject:
@@ -3268,9 +3268,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
-  pointID_1: 
+  pointID_1: r3+
   targetID_1: 
-  pointID_2: 
+  pointID_2: r3+
   targetID_2: 
 --- !u!1 &1260250622
 GameObject:
@@ -3458,9 +3458,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
-  pointID_1: 
+  pointID_1: P1
   targetID_1: 
-  pointID_2: 
+  pointID_2: P1
   targetID_2: 
 --- !u!1 &1582030268
 GameObject:
@@ -3808,9 +3808,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
-  pointID_1: 
+  pointID_1: r-
   targetID_1: 
-  pointID_2: 
+  pointID_2: r-
   targetID_2: 
 --- !u!1 &1602129693
 GameObject:
@@ -4096,7 +4096,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
-  pointID_1: 
+  pointID_1: sup+
   targetID_1: 
   pointID_2: 
   targetID_2: 
