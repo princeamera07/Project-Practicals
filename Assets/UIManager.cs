@@ -73,7 +73,7 @@ public class UIManager : MonoBehaviour
     {
         if (levelNumber == 1)
         {
-            SceneManager.LoadScene("Level1");
+            SceneManager.LoadScene("Bhuvneshlevel1");
         }
         else if (levelNumber == 2)
         {
