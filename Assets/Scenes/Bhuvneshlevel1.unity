@@ -2195,6 +2195,10 @@ MonoBehaviour:
   fineKnob: {fileID: 961090389}
   voltmeterText: {fileID: 1742285126}
   ammeterText: {fileID: 1690766964}
+  switchImage: {fileID: 1709612138}
+  switchOnPicture: {fileID: 21300000, guid: cec55fbb8c6224142964fa5faaad0d55, type: 3}
+  switchOffPicture: {fileID: 21300000, guid: af7bb7c53256f9b4594162cc3ef01890, type: 3}
+  isPowerOn: 0
   fineKnobStartingOffset: 0
   coarseMaxAngle: 360
   fineMaxAngle: 180
@@ -4603,8 +4607,8 @@ MonoBehaviour:
     m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 21300000, guid: cec55fbb8c6224142964fa5faaad0d55, type: 3}
-    m_SelectedSprite: {fileID: 21300000, guid: cec55fbb8c6224142964fa5faaad0d55, type: 3}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
@@ -4616,7 +4620,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1709612138}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 703893042}
+        m_TargetAssemblyTypeName: LabController, Assembly-CSharp
+        m_MethodName: TogglePower
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1714972523
 GameObject:
   m_ObjectHideFlags: 0
@@ -5112,6 +5128,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wirePrefab: {fileID: 7399065141583612501, guid: 64f8e390aac6f0244a1b8b0f3597bb82, type: 3}
   wireParent: {fileID: 484264105}
+  snapRadius: 20
   isEraserOn: 0
   deleteRadius: 2
   resolution: 40
