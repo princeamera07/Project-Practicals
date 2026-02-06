@@ -658,9 +658,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
-  pointID_1: r2-
+  pointID_1: 
   targetID_1: 
-  pointID_2: r2-
+  pointID_2: 
   targetID_2: 
 --- !u!1 &73302006
 GameObject:
@@ -812,9 +812,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
-  pointID_1: sup+
+  pointID_1: sup-
   targetID_1: 
-  pointID_2: sup+
+  pointID_2: sup-
   targetID_2: 
 --- !u!1 &76465159
 GameObject:
@@ -966,9 +966,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
-  pointID_1: r3-
+  pointID_1: 
   targetID_1: 
-  pointID_2: r3-
+  pointID_2: 
   targetID_2: 
 --- !u!1 &194725655
 GameObject:
@@ -1571,9 +1571,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
-  pointID_1: N1
-  targetID_1: 
-  pointID_2: N1
+  pointID_1: mainn
+  targetID_1: sup-
+  pointID_2: mainn
   targetID_2: 
 --- !u!1 &287774255
 GameObject:
@@ -2140,9 +2140,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
-  pointID_1: r2+
+  pointID_1: 
   targetID_1: 
-  pointID_2: r2+
+  pointID_2: 
   targetID_2: 
 --- !u!1 &360712052
 GameObject:
@@ -3463,6 +3463,7 @@ GameObject:
   - component: {fileID: 686231186}
   - component: {fileID: 686231185}
   - component: {fileID: 686231188}
+  - component: {fileID: 686231189}
   m_Layer: 5
   m_Name: Switch
   m_TagString: Untagged
@@ -3586,6 +3587,22 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &686231189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 686231183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ae02ed25df60de468fcca17a7d4bb45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetImage: {fileID: 686231186}
+  switchUpSprite: {fileID: 21300000, guid: 1d158f879fde81547b011ce62f9671e3, type: 3}
+  switchDownSprite: {fileID: 21300000, guid: e07b1966f72c6e947a6229dc07199837, type: 3}
+  isUp: 1
 --- !u!1 &689430002
 GameObject:
   m_ObjectHideFlags: 0
@@ -3720,7 +3737,8 @@ MonoBehaviour:
   coarseMaxVoltage: 10
   fineMaxVoltage: 1
   seriesResistance: 100
-  diodeCutIn: 0.7
+  diodeThreshold: 0.6
+  diodeInternalR: 0.5
 --- !u!1 &733881809
 GameObject:
   m_ObjectHideFlags: 0
@@ -4213,9 +4231,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
-  pointID_1: r+
+  pointID_1: r
   targetID_1: 
-  pointID_2: r+
+  pointID_2: r
   targetID_2: 
 --- !u!1 &849165215
 GameObject:
@@ -5151,6 +5169,7 @@ GameObject:
   - component: {fileID: 1002899771}
   - component: {fileID: 1002899770}
   - component: {fileID: 1002899773}
+  - component: {fileID: 1002899774}
   m_Layer: 5
   m_Name: Switch (1)
   m_TagString: Untagged
@@ -5274,6 +5293,22 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1002899774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1002899768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ae02ed25df60de468fcca17a7d4bb45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetImage: {fileID: 1002899771}
+  switchUpSprite: {fileID: 21300000, guid: 1d158f879fde81547b011ce62f9671e3, type: 3}
+  switchDownSprite: {fileID: 21300000, guid: e07b1966f72c6e947a6229dc07199837, type: 3}
+  isUp: 1
 --- !u!1 &1039770036
 GameObject:
   m_ObjectHideFlags: 0
@@ -6036,7 +6071,7 @@ MonoBehaviour:
   rectTransform: {fileID: 0}
   pointID_1: r3+
   targetID_1: 
-  pointID_2: r3+
+  pointID_2: 
   targetID_2: 
 --- !u!1 &1260250622
 GameObject:
@@ -6229,9 +6264,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
-  pointID_1: P1
+  pointID_1: mainp
   targetID_1: 
-  pointID_2: P1
+  pointID_2: mainp
   targetID_2: 
 --- !u!1 &1336157408
 GameObject:
@@ -7195,9 +7230,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
-  pointID_1: r-
-  targetID_1: 
-  pointID_2: r-
+  pointID_1: r
+  targetID_1: amm+
+  pointID_2: r
   targetID_2: 
 --- !u!1 &1664359290
 GameObject:
@@ -7350,8 +7385,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
   pointID_1: sup+
-  targetID_1: 
-  pointID_2: 
+  targetID_1: r
+  pointID_2: sup+
   targetID_2: 
 --- !u!1 &1678166775
 GameObject:
@@ -8463,8 +8498,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
-  pointID_1: 
-  targetID_1: 
+  pointID_1: amm-
+  targetID_1: mainp
   pointID_2: 
   targetID_2: 
 --- !u!1 &1834025215
@@ -8824,9 +8859,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
   pointID_1: volt+
-  targetID_1: P
-  pointID_2: volt+
-  targetID_2: amm+
+  targetID_1: sup-
+  pointID_2: 
+  targetID_2: 
 --- !u!114 &1870180311
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9075,9 +9110,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 0}
   pointID_1: volt+
-  targetID_1: P
-  pointID_2: volt+
-  targetID_2: amm+
+  targetID_1: sup+
+  pointID_2: 
+  targetID_2: 
 --- !u!1 &1890751281
 GameObject:
   m_ObjectHideFlags: 0
